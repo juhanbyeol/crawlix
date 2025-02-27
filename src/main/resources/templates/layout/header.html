@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<th:block th:fragment="headerLayout">
+
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+    	<link href="/css/styles.css" rel="stylesheet">
+   		<link href="/css/depth-style.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    	<script type="text/javascript" src="/js/common.js"></script>
+	</head>
+	
+    <header>
+        <div class="container">
+            <a href="/" class="logo">WebCrawler</a>
+            <nav>
+                <ul>
+                    <li><a href="/signup">회원가입</a></li>
+                    <li><a href="/login">로그인</a></li>
+                    <li><a href="/history">내 크롤링 기록</a></li>
+                    <li><a href="/settings">설정</a></li>
+                    <li><a href="/help">도움말</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+	
+</th:block>
+</html>

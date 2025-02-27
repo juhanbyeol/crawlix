@@ -1,0 +1,260 @@
+@charset "UTF-8";
+
+  
+ .header {
+   text-align: center;
+   padding: 2rem;
+   position: relative;
+ }
+ 
+ body {
+   height: 100vh;
+   background-image: url('https://juhanbyeol.github.io/failFast/images/bg_img.jpg');
+   background-size: cover;
+   background-position: center;
+   background-attachment: fixed;
+   background-repeat: no-repeat;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   color:#fff;
+ }
+ 
+ .logo {
+   font-size: 3rem;
+   font-weight: bold;
+   position: relative;
+   display: inline-block;
+ }
+ 
+ @keyframes flicker {
+   0% {
+     opacity: 0.8;
+   }
+   100% {
+     opacity: 1;
+   }
+ }
+ 
+ .content {
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 2rem;
+   background-color: rgba(255, 255, 255, 0.1);
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+ }
+ 
+ h2 {
+   color: #FFD700;
+ }
+ 
+ .features {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   gap: 1rem;
+   margin-top: 2rem;
+ }
+ 
+ .feature {
+   background-color: rgba(255, 255, 255, 0.2);
+   padding: 1rem;
+   border-radius: 5px;
+   text-align: center;
+ }
+ 
+ .cta {
+   text-align: center;
+   margin-top: 2rem;
+ }
+ 
+ .btn {
+   display: inline-block;
+   padding: 0.8rem 1.5rem;
+   background-color: #FFD700;
+   color: #6a0dad;
+   text-decoration: none;
+   border-radius: 5px;
+   font-weight: bold;
+   transition: transform 0.3s ease;
+ }
+ 
+ .btn:hover {
+   transform: scale(1.05);
+ }
+ 
+ footer {
+   text-align: center;
+   padding: 1rem;
+   margin-top: auto;
+   background-color: rgba(0, 0, 0, 0.2);
+ }
+ 
+ /* Button Styles */
+ button, input[type="button"], input[type="submit"] {
+   background-color: #FFD700;
+   color: #6a0dad;
+   border: none;
+   padding: 0.8rem 1.5rem;
+   border-radius: 5px;
+   font-weight: bold;
+   cursor: pointer;
+   transition: background-color 0.3s ease, transform 0.3s ease;
+ }
+ 
+ button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+   background-color: #e5c100;
+   transform: scale(1.05);
+ }
+ 
+ /* Input Field Styles */
+ input[type="text"], input[type="email"], input[type="password"], textarea {
+   width: 100%;
+   padding: 0.8rem;
+   margin: 0.5rem 0;
+   border-radius: 5px;
+   border: 1px solid #ddd;
+   background-color: #fff;
+   color: #6a0dad;
+   box-sizing: border-box;
+ }
+ 
+ input[type="checkbox"], input[type="radio"] {
+   margin-right: 0.5rem;
+   transform: scale(1.2);
+ }
+ 
+ /* Grid System */
+ .container {
+   width: 100%;
+   margin-right: auto;
+   margin-left: auto;
+   padding-right: 15px;
+   padding-left: 15px;
+ }
+ 
+ .row {
+   display: flex;
+   flex-wrap: wrap;
+   margin-right: -15px;
+   margin-left: -15px;
+ }
+ 
+ [class*="col-"] {
+   position: relative;
+   width: 100%;
+   padding-right: 15px;
+   padding-left: 15px;
+ }
+ 
+ .col-12 {
+   flex: 0 0 100%;
+   max-width: 100%;
+ }
+ 
+ .col-md-6 {
+   flex: 0 0 50%;
+   max-width: 50%;
+ }
+ 
+ .col-md-4 {
+   flex: 0 0 33.3333%;
+   max-width: 33.3333%;
+ }
+ 
+ .col-md-3 {
+   flex: 0 0 25%;
+   max-width: 25%;
+ }
+ 
+ @media (max-width: 768px) {
+   .col-md-6, .col-md-4, .col-md-3 {
+     flex: 0 0 100%;
+     max-width: 100%;
+   }
+ }
+ 
+ /* Utility Classes */
+ .text-center {
+   text-align: center;
+ }
+ 
+ .mt-1 {
+   margin-top: 1rem;
+ }
+ 
+ .mb-1 {
+   margin-bottom: 1rem;
+ }
+ 
+ .p-1 {
+   padding: 1rem;
+ }
+ 
+ .bg-primary {
+   background-color: #6a0dad;
+ }
+ 
+ .bg-secondary {
+   background-color: #FFD700;
+ }
+ 
+ .text-white {
+   color: #fff;
+ }
+ 
+ .text-primary {
+   color: #6a0dad;
+ }
+ 
+ /* Search Form Styles */
+.search {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 0.5rem;
+    color: #6a0dad;
+    width: 100%;
+    max-width: 250px;
+    box-sizing: border-box;
+}
+
+.search-input[type="date"] {
+    max-width: 150px;
+}
+
+/* Table Styles */
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.board-table th, .board-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.board-table th {
+    background-color: #6a0dad;
+    color: #fff;
+}
+
+.board-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+ 

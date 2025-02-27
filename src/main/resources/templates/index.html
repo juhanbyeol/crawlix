@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+	<th:block layout:fragment="content">
+	    <main class="content">
+	        <section class="main-intro">
+	            <div class="container">
+	                <h1>웹 크롤링 서비스</h1>
+	                <p>이 서비스는 웹사이트의 데이터를 자동으로 수집하고 분석하는 도구입니다.</p>
+	            </div>
+	        </section>
+	        
+			<!-- 🚀 단계별 뎁스화된 UI -->
+			<section class="input-section">
+			    <div class="container">
+			        <!-- 단계별 진행 표시 -->
+			        <div class="step-indicator">
+			            <div class="step active" id="step-1">
+			                <div class="circle">1</div>
+			                <p>사이트 접속</p>
+			            </div>
+			            <div class="line"></div>
+			            <div class="step" id="step-2">
+			                <div class="circle">2</div>
+			                <p>크롤링 시작</p>
+			            </div>
+			        </div>
+			
+			        <!-- 🔵 Step 1: 사이트 접속 -->
+			        <form id="crawl-form" class="depth-box">
+			            <h3 class="step-title">1️⃣ 초기 접속할 URL 입력</h3>
+			            <div class="input-group">
+			                <input type="text" class="url-input" id="url-input" placeholder="초기 접속할 URL 입력">
+			                <button type="button" id="start-crawl-btn">사이트 접속</button>
+			            </div>
+						<br>
+				        <!-- 🟢 Step 2: 크롤링 시작 (초기에는 숨김) -->
+				        <div id="tab-url-section" class="depth-box"><!--hidden  -->
+				            <h3 class="step-title">2️⃣ 크롤링할 탭 URL 입력</h3>
+				            <div class="input-group">
+				                <input type="text" class="url-input" id="tab-url-input" placeholder="탭 URL 또는 추가 경로 입력">
+				                <button type="button" id="continue-crawl-btn">크롤링 시작</button>
+				            </div>
+				        </div>
+			        </form>
+			    </div>
+			</section>
+
+	
+	        <section class="dashboard">
+	            <div class="container">
+	                <h2>크롤링 진행 상황</h2>
+	                <div class="progress-box">
+	                    <div class="status">상태: 진행 중</div>
+	                    <div class="progress-bar">
+	                        <div class="progress" style="width: 30%;"></div>
+	                    </div>
+	                </div>
+	                <div class="data-preview">
+	                    <h3>저장된 데이터 파일 목록 </h3>
+	                    <table>
+	                        <thead>
+	                            <tr>
+	                                <th>파일명</th>
+	                                <th>다운로드</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody id="dataList">
+	                        </tbody>
+	                    </table>
+	                </div>
+	            </div>
+	        </section>
+	
+	        <section class="results-section">
+	            <div class="container">
+	                <h2>크롤링 결과</h2>
+	                <div class="button-group">
+	                    <button class="btn btn-primary">결과 보기</button>
+	                    <button class="btn btn-secondary">CSV 다운로드</button>
+	                </div>
+	            </div>
+	        </section>
+	
+	        <section class="help-section">
+	            <div class="container">
+	                <h2>도움이 필요하신가요?</h2>
+	                <div class="links">
+	                    <a href="/faq">FAQ</a>
+	                    <a href="/tutorial">튜토리얼</a>
+	                    <a href="/contact">문의하기</a>
+	                </div>
+	            </div>
+	        </section>
+	    </main>
+	    <script src="/js/index.js"></script>
+	</th:block>
+</html>

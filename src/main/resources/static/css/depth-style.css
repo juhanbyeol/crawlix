@@ -1,0 +1,99 @@
+/* 🔵 단계별 뎁스화 디자인 */
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #bbb;
+}
+
+.step.active {
+  color: #3498db;
+}
+
+.step .circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.step.active .circle {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.step p {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.line {
+  width: 100px;
+  height: 4px;
+  background-color: #e0e0e0;
+  margin: 0 1rem;
+  transition: background-color 0.3s;
+}
+
+.step.active ~ .line {
+  background-color: #3498db;
+}
+
+/* 🟢 단계별 입력 박스 */
+.depth-box {
+/*   background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  transition: transform 0.3s; */
+}
+
+.depth-box:hover {
+  transform: translateY(-5px);
+}
+
+.hidden {
+  display: none;
+}
+
+.step-title {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.input-group {
+  display: flex;
+}
+
+#tab-url-section input,
+#tab-url-section button,
+#url-input,
+#crawl-form button {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .step-indicator {
+    flex-direction: column;
+  }
+  .line {
+    width: 4px;
+    height: 50px;
+  }
+}

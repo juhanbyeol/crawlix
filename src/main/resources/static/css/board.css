@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+/* General Card Layout */
+.board-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.board-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.board-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    color: #FFD700;
+}
+
+.board-card .card-header .id {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.board-card .card-header .date {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.board-card .card-content {
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.board-card .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.board-card .card-footer .author {
+    font-weight: bold;
+}
+
+.board-card .card-footer .title {
+    color: #FFD700;
+}
+
+/* Responsive Card Layout */
+@media (max-width: 768px) {
+    .board-card {
+        padding: 1rem;
+    }
+
+    .board-card .card-header, .board-card .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .board-card .card-header .date, .board-card .card-footer .author {
+        margin-top: 0.5rem;
+    }
+}
