@@ -133,6 +133,7 @@ public class SeleniumCrawlService {
         return maxNumber + 1;
     }
  
+    
     /**
      * 📂 저장된 파일 목록 조회
      */
