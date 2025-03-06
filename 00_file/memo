@@ -1,0 +1,36 @@
+
+쇼핑몰 자동 서칭 크롤링 서비스
+
+만드는 이유 :
+- 상품을 비교를 하려고 하는데, 검색되는 상품들은 많고, 별점과 리뷰순으로 골라봐도 요즘에는 조작이 가능한 부분이여서 신뢰가 안간다.
+- 웹 개발을 6년간 해오면서 크롤링을 만들어 본적이 없어서 이번을 기회로 시작한다.
+- 이번 개발을 통해 개발에 대한 재미와 기본기, AI의 활용 그리고 백엔드 위주로 스킬업을 하고 싶다.
+
+----------- 링크 및 DOM객체 서칭 순서 --------------
+타켓 : https://shopping.naver.com/ns/home
+검색 입력 class : _searchInput_search_text_83jy9
+또는 엔터 키 이벤트 
+검색 버튼 class : _searchInput_button_search_wu9xq
+목록 id : composite-card-list
+하위 div > ul >
+하위 li class : compositeCardContainer_composite_card_container__jr8cb
+
+스크롤 이동
+
+추가된 li clss : compositeCardContainer_composite_card_container__jr8cb 
+
+
+
+
+
+1. 크롤링할 링크를 입력받는다.
+2. 키워드를 입력받는다.
+3. 입력 받은 키워드를 통해 검색 클릭까지 진행한다.
+4. 나온 목록들의 고정 class나 id를 입력받는다. 
+5. 입력 받은 타켓을 조회한다.
+6. 현제 페이지의 타켓을 전부 조회했으면 리스트에 저장한다. 
+7. 이어서 다음 페이지로 이동 또는 스크롤 한뒤에 6번 과정을 반복한다. 
+8. 6 ~7번 의 횟수는 최초 1 ~3번 항목을 입력 받을때 같이받아 저장해둔다. 
+9. 멈춘 뒤에는 최종 리스트를 가지고 txt, excel 파일 선택을 하여 다운 받도록 한다. 
+
+추가 기능 

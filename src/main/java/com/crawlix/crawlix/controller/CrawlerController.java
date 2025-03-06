@@ -64,6 +64,24 @@ public class CrawlerController {
         }
     }
     
+    /*
+     타켓 : https://shopping.naver.com/ns/home
+    검색 입력 class : _searchInput_search_text_83jy9
+    또는 엔터 키 이벤트 
+    검색 버튼 class : _searchInput_button_search_wu9xq
+    목록 id : composite-card-list
+    하위 div > ul >
+    하위 li class : compositeCardContainer_composite_card_container__jr8cb
+    
+    스크롤 이동
+    
+    추가된 li clss : compositeCardContainer_composite_card_container__jr8cb 
+    
+    
+    
+    
+     * */
+    
     /**
      * 📜 저장된 파일 목록 반환 (JSON)
      */
