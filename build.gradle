@@ -46,6 +46,10 @@ dependencies {
     //implementation 'org.seleniumhq.selenium:selenium-devtools-v133:4.18.1' 
     implementation 'org.seleniumhq.selenium:selenium-java:4.29.0'
     implementation 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+	 // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
+	implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.9.3'
+	 // WebDriverManager 추가
+    
 }
 
 tasks.named('test') {

@@ -1,97 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+	<style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #resultList {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #resultList li {
+            margin: 10px;
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none; /* 처음엔 숨김 */
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 	<th:block layout:fragment="content">
 	    <main class="content">
-	        <section class="main-intro">
-	            <div class="container">
-	                <h1>웹 크롤링 서비스</h1>
-	                <p>이 서비스는 웹사이트의 데이터를 자동으로 수집하고 분석하는 도구입니다.</p>
-	            </div>
-	        </section>
+	        <h2>크롤링된 네이버 쇼핑 이미지 리스트</h2>
+	        <input type="text" id="keyword" value="" placeholder="네이버에서 찾을 상품을 입력하세요.">
+    <button onclick="fetchData()">검색 결과 가져오기</button>
+    <ul id="resultList"></ul>
+
+    <script>
+	    async function fetchData() {
+	        const keyword = document.getElementById("keyword").value;
+	        const apiUrl = `http://localhost:8080/api/naver/search?keyword=${keyword}`;
 	        
-			<!-- 🚀 단계별 뎁스화된 UI -->
-			<section class="input-section">
-			    <div class="container">
-			        <!-- 단계별 진행 표시 -->
-			        <div class="step-indicator">
-			            <div class="step active" id="step-1">
-			                <div class="circle">1</div>
-			                <p>사이트 접속</p>
-			            </div>
-			            <div class="line"></div>
-			            <div class="step" id="step-2">
-			                <div class="circle">2</div>
-			                <p>크롤링 시작</p>
-			            </div>
-			        </div>
-			
-			        <!-- 🔵 Step 1: 사이트 접속 -->
-			        <form id="crawl-form" class="depth-box">
-			            <h3 class="step-title">1️⃣ 초기 접속할 URL 입력</h3>
-			            <div class="input-group">
-			                <input type="text" class="url-input" id="url-input" placeholder="초기 접속할 URL 입력">
-			                <button type="button" id="start-crawl-btn">사이트 접속</button>
-			            </div>
-						<br>
-				        <!-- 🟢 Step 2: 크롤링 시작 (초기에는 숨김) -->
-				        <div id="tab-url-section" class="depth-box"><!--hidden  -->
-				            <h3 class="step-title">2️⃣ 크롤링할 탭 URL 입력</h3>
-				            <div class="input-group">
-				                <input type="text" class="url-input" id="tab-url-input" placeholder="탭 URL 또는 추가 경로 입력">
-				                <button type="button" id="continue-crawl-btn">크롤링 시작</button>
-				            </div>
-				        </div>
-			        </form>
-			    </div>
-			</section>
+	        const resultList = document.getElementById("resultList");
+	        resultList.innerHTML = ""; // 기존 목록 초기화
 
 	
-	        <section class="dashboard">
-	            <div class="container">
-	                <h2>크롤링 진행 상황</h2>
-	                <div class="progress-box">
-	                    <div class="status">상태: 진행 중</div>
-	                    <div class="progress-bar">
-	                        <div class="progress" style="width: 30%;"></div>
-	                    </div>
-	                </div>
-	                <div class="data-preview">
-	                    <h3>저장된 데이터 파일 목록 </h3>
-	                    <table>
-	                        <thead>
-	                            <tr>
-	                                <th>파일명</th>
-	                                <th>다운로드</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody id="dataList">
-	                        </tbody>
-	                    </table>
-	                </div>
-	            </div>
-	        </section>
+	        try {
+	            const response = await fetch(apiUrl);
+	            if (!response.ok) {
+	                throw new Error("서버 응답 실패");
+	            }
 	
-	        <section class="results-section">
-	            <div class="container">
-	                <h2>크롤링 결과</h2>
-	                <div class="button-group">
-	                    <button class="btn btn-primary">결과 보기</button>
-	                    <button class="btn btn-secondary">CSV 다운로드</button>
-	                </div>
-	            </div>
-	        </section>
+	            const productLinks = await response.json();
+	            
+	            // 🔹 결과가 없을 경우 안내 메시지 표시
+	            if (productLinks.length === 0) {
+	                resultList.innerHTML = "<li>상품이 없습니다.</li>";
+	                return;
+	            }
 	
-	        <section class="help-section">
-	            <div class="container">
-	                <h2>도움이 필요하신가요?</h2>
-	                <div class="links">
-	                    <a href="/faq">FAQ</a>
-	                    <a href="/tutorial">튜토리얼</a>
-	                    <a href="/contact">문의하기</a>
-	                </div>
-	            </div>
-	        </section>
-	    </main>
-	    <script src="/js/index.js"></script>
+	            productLinks.forEach(productUrl => {
+	                // 🔹 li 요소 생성
+	                const li = document.createElement("li");
+	
+	                // 🔹 이미지 태그 생성
+	                const img = document.createElement("img");
+	                img.src = productUrl;
+	                img.alt = "상품 이미지";
+	
+	                // 🔹 li 안에 img 추가
+	                li.appendChild(img);
+	                resultList.appendChild(li);
+	            });
+	
+	        } catch (error) {
+	            console.error("❌ 데이터 가져오기 실패:", error);
+	            errorMessage.textContent = "❌ 크롤링 데이터 가져오기 실패!";
+	            errorMessage.style.display = "block";
+	        }
+	    }
+
+
+        // 🔹 크롤링된 상품 링크에서 이미지 URL을 추출하는 함수 (임시)
+        function extractImageUrl(productUrl) {
+            return `https://via.placeholder.com/200?text=${encodeURIComponent(productUrl)}`;
+        }
+    </script>
 	</th:block>
 </html>
