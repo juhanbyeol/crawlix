@@ -71,17 +71,26 @@
 	                return;
 	            }
 	
-	            productLinks.forEach(productUrl => {
+	            productLinks.forEach((productUrl, index) => {
 	                // 🔹 li 요소 생성
 	                const li = document.createElement("li");
-	
-	                // 🔹 이미지 태그 생성
-	                const img = document.createElement("img");
-	                img.src = productUrl;
-	                img.alt = "상품 이미지";
-	
-	                // 🔹 li 안에 img 추가
-	                li.appendChild(img);
+
+	                if (index % 2 === 0) {
+	                    // ✅ 짝수번째 (0,2,4,6...) → 이미지 태그 추가
+	                    const img = document.createElement("img");
+	                    img.src = productUrl;
+	                    img.alt = "상품 이미지";
+	                    li.appendChild(img);
+	                } else {
+	                    // ✅ 홀수번째 (1,3,5,7...) → 링크 태그 추가
+	                    const link = document.createElement("a");
+	                    link.href = productUrl;
+	                    link.target = "_blank"; // 새 창에서 열기
+	                    link.textContent = "상세페이지 이동";
+
+	                    li.appendChild(link);
+	                }
+
 	                resultList.appendChild(li);
 	            });
 	

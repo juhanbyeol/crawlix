@@ -82,10 +82,15 @@ public class NaverCrawlerService {
 
             for (WebElement container : productContainers) {
                 try {
-                    WebElement linkElement = container.findElement(By.tagName("img"));
-                    String productUrl = linkElement.getAttribute("src");
-                    if (productUrl != null && !productUrl.isEmpty()) {
-                        productLinks.add(productUrl);
+                    WebElement imgElement = container.findElement(By.tagName("img"));
+                    WebElement linkElement = container.findElement(By.tagName("a"));
+                    String productSrc = imgElement.getAttribute("src");
+                    String productLink = linkElement.getAttribute("href");
+                    if (productSrc != null && !productSrc.isEmpty()) {
+                        productLinks.add(productSrc);
+                    }
+                    if (productLink != null && !productLink.isEmpty()) {
+                        productLinks.add(productLink);
                     }
                 } catch (Exception e) {
                     System.out.println("❌ 링크 추출 실패: " + e.getMessage());
