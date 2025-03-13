@@ -2,6 +2,7 @@ package com.crawlix.crawlix.controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,11 @@ public class NaverCrawlerController {
     public ResponseEntity<List<String>> searchProducts(@RequestParam("keyword") String keyword) {
         List<String> products = naverCrawlerService.searchProducts(keyword);
         return ResponseEntity.ok(products); // JSON 응답 반환
+    }
+    
+    @GetMapping("/detail")
+    public ResponseEntity<Map<String, Object>> getDetail(@RequestParam String url) {
+    	Map<String, Object> map = naverCrawlerService.crawlDetailPage(url);
+        return ResponseEntity.ok(map); // JSON 응답 반환
     }
 }

@@ -8,30 +8,35 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import jakarta.annotation.PreDestroy;
 
 @Configuration
 public class SeleniumConfig {
     @Bean
-    @Scope("prototype")
+    @Scope("prototype")//@Scope prototype을 사용하면 spring이 자동으로 관리하지 않
     public WebDriver webDriver() {
-        //System.setProperty("webdriver.chrome.driver", "/Users/juhanbyeol/spring/crawlix_files/chromedriver/chromedriver"); // Mac 예제
-//        try {
-            //WebDriverManager.chromedriver().setup(); // ChromeDriver 자동 다운로드
-        	WebDriverManager.chromedriver().clearResolutionCache().setup();
+    	WebDriverManager.chromedriver().clearResolutionCache().setup();
 
-            ChromeOptions options = new ChromeOptions();
+        ChromeOptions options = new ChromeOptions();
 //            options.addArguments("--headless");  // UI 없이 실행 (옵션)
-            options.addArguments("--disable-gpu");
-            options.addArguments("--no-sandbox");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
 
-            WebDriver driver = new ChromeDriver(options);
-            System.out.println("✅ WebDriver가 정상적으로 생성되었습니다.");
-            return driver;
-//            return new ChromeDriver(options);
-//        } catch (Exception e) {
-//            System.err.println("❌ WebDriver 생성 중 오류 발생: " + e.getMessage());
-//            throw new RuntimeException("WebDriver 생성 실패", e);
-//        }
+        WebDriver driver = new ChromeDriver(options);
+        System.out.println("✅ WebDriver가 정상적으로 생성되었습니다.");
+        return driver;
+    }
+    
+    @PreDestroy
+    public void destroy() {
+        System.out.println("🛑 WebDriver 종료 중...");
+        // 모든 WebDriver 프로세스 종료 (남아 있는 경우)
+        try {
+            Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe /T"); // Windows
+            Runtime.getRuntime().exec("pkill -f chromedriver"); // Mac/Linux
+        } catch (Exception e) {
+            System.out.println("❌ WebDriver 종료 오류: " + e.getMessage());
+        }
     }
 }
 

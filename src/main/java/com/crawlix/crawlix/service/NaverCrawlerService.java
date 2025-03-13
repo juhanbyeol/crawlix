@@ -2,7 +2,10 @@ package com.crawlix.crawlix.service;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -102,7 +105,79 @@ public class NaverCrawlerService {
         } catch (Exception e) {
             System.out.println("❌ 크롤링 실패: " + e.getMessage());
             return new ArrayList<>();
+        } finally {
+            webDriver.quit(); // 🔴 요청이 끝난 후 WebDriver 종료
+            System.out.println("✅ WebDriver가 정상적으로 종료되었습니다.");
         }
+    }
+    
+    public Map<String, Object> crawlDetailPage(String url) {
+        Map<String, Object> data = new HashMap<>();
+
+        try {
+            webDriver.get(url);
+            Thread.sleep(2000); // 페이지 로딩 대기
+            
+            /*
+             *1. 상세페이지에서 태그 fieldset 를 찾기 
+             *2. 1번에서 찾은 태그 하위에 h3 태그 찾은뒤 text 가져오기 (상세페이지 상품 제목임)
+             *3. 그리고 이어서 class _1LY7DqCnwR 를 찾은 뒤 text 가져오기상품 금액임)
+             *4. 그 다음에는 class _1gG8JHE9Zc 을 찾은 뒤에 만약 존재한 다면 클릭이벤트 처리해서 상세정보 펼치기 
+             *5. class se-main-container을 찾은 뒤에 하위 dom 을 문자열 그대로 담기
+             *6. 지금까지 처리된 데이터를 title, price, contents 라는 key 로 map에 담아서 리턴하
+             * */
+
+            /*
+             * 1. 상세페이지에서 fieldset 태그 찾기
+             */
+            WebElement fieldsetElement = webDriver.findElement(By.tagName("fieldset"));
+
+            /*
+             * 2. fieldset 하위에서 h3 태그 찾고 상품 제목 가져오기
+             */
+            WebElement titleElement = fieldsetElement.findElement(By.tagName("h3"));
+            String title = titleElement.getText();
+            data.put("title", title);
+
+            /*
+             * 3. class _1LY7DqCnwR 를 찾아 상품 금액 가져오기
+             */
+            WebElement priceElement = webDriver.findElement(By.className("_1LY7DqCnwR"));
+            String price = priceElement.getText();
+            data.put("price", price);
+
+            /*
+             * 4. class _1gG8JHE9Zc을 찾은 뒤 존재하면 클릭하여 상세정보 펼치기
+             */
+            try {
+                WebElement detailToggleElement = webDriver.findElement(By.className("_1gG8JHE9Zc"));
+                if (detailToggleElement.isDisplayed()) {
+                    detailToggleElement.click();
+                    Thread.sleep(1000); // 클릭 후 로딩 대기
+                }
+            } catch (NoSuchElementException e) {
+                System.out.println("🔹 상세 정보 펼치기 버튼이 존재하지 않음.");
+            }
+
+            /*
+             * 5. class se-main-container을 찾아 하위 DOM을 문자열 그대로 저장하기
+             */
+            WebElement contentElement = webDriver.findElement(By.className("se-main-container"));
+            String contents = contentElement.getAttribute("innerHTML"); // HTML 그대로 가져오기
+            data.put("contents", contents);
+
+            data.put("url", url);
+
+        } catch (NoSuchElementException e) {
+            data.put("error", "❌ 요소를 찾을 수 없음: " + e.getMessage());
+        } catch (Exception e) {
+            data.put("error", "❌ 크롤링 실패: " + e.getMessage());
+        } finally {
+            webDriver.quit(); // 🔴 요청이 끝난 후 WebDriver 종료
+            System.out.println("✅ WebDriver가 정상적으로 종료되었습니다.");
+        }
+
+        return data;
     }
 
 }
