@@ -38,8 +38,9 @@ public class NaverCrawlerController {
     }
     
     @GetMapping("/detail")
-    public ResponseEntity<Map<String, Object>> getDetail(@RequestParam String url) {
+    public ResponseEntity<Map<String, Object>> getDetail(@RequestParam("url") String url) {
     	Map<String, Object> map = naverCrawlerService.crawlDetailPage(url);
         return ResponseEntity.ok(map); // JSON 응답 반환
     }
+    
 }
