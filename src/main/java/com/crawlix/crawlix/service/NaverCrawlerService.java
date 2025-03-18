@@ -26,17 +26,17 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class NaverCrawlerService {
-    private WebDriver webDriver; // 🟢 WebDriver를 한 번만 생성하고 재사용
+    private WebDriver webDriver; // WebDriver를 한 번만 생성하고 재사용
     
     public WebDriver getWebDriver() {
-        if (this.webDriver == null) { // 🟢 필요할 때만 새 WebDriver 생성
+        if (this.webDriver == null) { // 필요할 때만 새 WebDriver 생성
             this.webDriver = new ChromeDriver();
         }
         return this.webDriver;
     }
 
     public List<String> searchProducts(String keyword) {
-        WebDriver webDriver = getWebDriver(); // 🟢 기존 WebDriver 사용
+        WebDriver webDriver = getWebDriver(); // 기존 WebDriver 사용
         String url = "https://search.shopping.naver.com/";
         webDriver.get(url);
 
@@ -142,7 +142,7 @@ public class NaverCrawlerService {
                 WebElement detailToggleElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("_1gG8JHE9Zc")));
                 if (detailToggleElement.isDisplayed()) {
                     detailToggleElement.click();
-                    wait.until(ExpectedConditions.attributeContains(detailToggleElement, "class", "expanded"));
+                    //wait.until(ExpectedConditions.attributeContains(detailToggleElement, "class", "expanded"));
                 }
             } catch (TimeoutException e) {
                 System.out.println("🔹 상세 정보 펼치기 버튼이 존재하지 않음.");
@@ -151,7 +151,7 @@ public class NaverCrawlerService {
             /*
              * 5. class se-main-container을 찾아 하위 DOM을 문자열 그대로 저장하기
              */
-            WebElement contentElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("se-main-container")));
+            WebElement contentElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("_9F9CWn02VE")));
             String contents = contentElement.getAttribute("innerHTML");
             data.put("contents", contents);
             data.put("url", url);
@@ -162,7 +162,9 @@ public class NaverCrawlerService {
             data.put("error", "❌ 요소를 찾을 수 없음: " + e.getMessage());
         } catch (Exception e) {
             data.put("error", "❌ 크롤링 실패: " + e.getMessage());
-        }
+        } finally {
+        	quitWebDriver();	
+		}
 
         return data;
     }
