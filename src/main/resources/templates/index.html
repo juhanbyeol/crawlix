@@ -1,167 +1,72 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
-	<style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        #resultList {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        #resultList li {
-            margin: 10px;
-            width: 200px;
-            height: 200px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f9f9f9;
-        }
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            display: none; /* 처음엔 숨김 */
-        }
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px; padding: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     </style>
 	<th:block layout:fragment="content">
 	    <main class="content">
-	        <h2>크롤링된 네이버 쇼핑 이미지 리스트</h2>
-	        <input type="text" id="keyword" value="" placeholder="네이버에서 찾을 상품을 입력하세요.">
-    <button onclick="fetchData()">검색 결과 가져오기</button>
-    <ul id="resultList"></ul>
+	     <h2>네이버 스토어 크롤링</h2>
+    <input type="text" id="keyword" placeholder="키워드를 입력하세요">
+    <input type="number" id="maxItems" placeholder="최대 상품 개수">
+    <input type="checkbox" id="useScroll"> 스크롤 사용
+    <input type="number" id="scrollCount" placeholder="스크롤 횟수">
+    <button id="startCrawl">크롤링 시작</button>
+
+    <h3>결과 목록</h3>
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>이미지</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>상세보기</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
     <script>
-	    async function fetchData() {
-	        const keyword = document.getElementById("keyword").value;
-	        const apiUrl = `http://localhost:8080/api/naver/search?keyword=${keyword}`;
-	        
-	        const resultList = document.getElementById("resultList");
-	        resultList.innerHTML = ""; // 기존 목록 초기화
+        $(document).ready(function () {
+            $("#startCrawl").click(function () {
+                let keyword = $("#keyword").val();
+                let maxItems = $("#maxItems").val();
+                let useScroll = $("#useScroll").is(":checked");
+                let scrollCount = $("#scrollCount").val();
 
-	
-	        try {
-	            const response = await fetch(apiUrl);
-	            if (!response.ok) {
-	                throw new Error("서버 응답 실패");
-	            }
-	
-	            const productLinks = await response.json();
-	            
-	            // 🔹 결과가 없을 경우 안내 메시지 표시
-	            if (productLinks.length === 0) {
-	                resultList.innerHTML = "<li>상품이 없습니다.</li>";
-	                return;
-	            }
-	
-	            productLinks.forEach((productUrl, index) => {
-	                // 🔹 li 요소 생성
-	                const li = document.createElement("li");
-
-	                if (index % 2 === 0) {
-	                    // ✅ 짝수번째 (0,2,4,6...) → 이미지 태그 추가
-	                    const img = document.createElement("img");
-	                    img.src = productUrl;
-	                    img.alt = "상품 이미지";
-	                    li.appendChild(img);
-	                } else {
-	                    // ✅ 홀수번째 (1,3,5,7...) → 링크 태그 추가
-	                    const link = document.createElement("a");
-	                    //link.href = productUrl;
-	                    link.dataset.url =  productUrl;
-	                    link.href = "#none";
-	                    //link.target = "_blank"; // 새 창에서 열기
-	                    link.textContent = "상세페이지 이동";
-	                    link.onclick = function () {
-	                    	const url = this.dataset.url; // data-url에서 값 가져오기
-	                        openDetailPage(url);
-	                    }
-
-	                    li.appendChild(link);
-	                }
-
-	                resultList.appendChild(li);
-	            });
-	
-	        } catch (error) {
-	            console.error("❌ 데이터 가져오기 실패:", error);
-	            errorMessage.textContent = "❌ 크롤링 데이터 가져오기 실패!";
-	            errorMessage.style.display = "block";
-	        }
-	    }
-
-
-        // 🔹 크롤링된 상품 링크에서 이미지 URL을 추출하는 함수 (임시)
-        function extractImageUrl(productUrl) {
-            return `https://via.placeholder.com/200?text=${encodeURIComponent(productUrl)}`;
-        }
-        
-        async function openDetailPage(url) {
-            //const apiUrl = `http://localhost:8080/search/detail?url=${encodeURIComponent(productUrl)}`;
-           
-            const apiUrl = `http://localhost:8080/api/naver/detail?url=${encodeURIComponent(url)}`;
-
-            try {
-                const response = await fetch(apiUrl);
-               	console.log(response);
-                if (!response.ok) {
-                    throw new Error("서버 응답 실패");
+                if (!keyword || !maxItems || (useScroll && !scrollCount)) {
+                    alert("필수 입력값을 모두 채워주세요.");
+                    return;
                 }
 
-                const detailData = await response.json();
-                
-                console.log(detailData);
-
-                // 🔹 새 창 열기
-                const detailWindow = window.open("", "_blank", "width=800,height=600");
-
-                // 🔹 새 창에 HTML 삽입
-            detailWindow.document.write(`
-                    <html>
-                    <head>
-                        <title>상품 상세 정보</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            .container { max-width: 600px; margin: auto; }
-                            h2 { color: #333; }
-                            .price { font-size: 20px; font-weight: bold; color: #ff4500; }
-                            .content { margin-top: 20px; padding: 10px; border: 1px solid #ddd; }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h2>${detailData.title || "제목 없음"}</h2>
-                            <p class="price">${detailData.price || "가격 정보 없음"}</p>
-                            <img src="${detailData.image || 'https://via.placeholder.com/200'}" alt="상품 이미지" width="200">
-                            <div class="content">${detailData.contents || "상세 설명 없음"}</div>
-                        </div>
-                    </body>
-                    </html>
-                `); 
-
-            } catch (error) {
-                console.error("❌ 상세 페이지 데이터 가져오기 실패:", error);
-                alert("❌ 상세 정보를 불러오는 데 실패했습니다.");
-            }
-        }
-
+                $.ajax({
+                    type: "POST",
+                    url: "/api/naver/execute",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        keyword: keyword,
+                        maxItems: parseInt(maxItems),
+                        useScroll: useScroll,
+                        scrollCount: parseInt(scrollCount)
+                    }),
+                    success: function (response) {
+                        let tbody = $("#resultTable tbody").empty();
+                        response.items.forEach(item => {
+                            let row = `<tr>
+                                <td><img src="${item.imgUrl}" style="width:50px;"></td>
+                                <td>${item.title}</td>
+                                <td>${item.price}</td>
+                                <td><a href="${item.detailUrl}" target="_blank">상세보기</a></td>
+                            </tr>`;
+                            tbody.append(row);
+                        });
+                    }
+                });
+            });
+        });
     </script>
+	      </main>
 	</th:block>
 </html>
